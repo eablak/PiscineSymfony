@@ -10,20 +10,12 @@ $body = new Elem('body');
 $body->pushElement(new Elem('div'));
 $body->pushElement(new Elem('p', 'Lorem ipsum'));
 $p2 = new Elem('p', 'This is some text in a paragraph.');
-$img = new Elem("img");
-$body->pushElement($img);
+$body->pushElement(new Elem('img', null, ['width' => '100', 'height'=>'100']));
 $body->pushElement(new Elem('br'));
 $body->pushElement($p2);
 $elem->pushElement($body);
 $templateEngine = new TemplateEngine($elem);
 
 $templateEngine->createFile("test.html");
-
-
-// $elem = new Elem('html');
-// $body = new Elem('body');
-// $body->pushElement(new Elem('p', 'Lorem ipsum'));
-// $elem->pushElement($body);
-// echo $elem->getHTML();
 
 ?>
