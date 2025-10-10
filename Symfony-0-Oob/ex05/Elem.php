@@ -111,7 +111,7 @@ class Elem{
 
         if (!($title == 1 && $meta ==1))
             return false;
-
+        
         return true;
 
     }
@@ -120,17 +120,73 @@ class Elem{
         
         if (count($array)){
             foreach ($array as $arr){
-                $this->check_p($arr->element, $arr->all);
+                if (!$this->check_p($arr->element, $arr->all))
+                    return false;
                 if ($arr->element == 'p' && count($arr->all)){
                     // print_r($arr->all);
                     return false;
                 }
             }
         }
-
+       
         return true;
+    }
 
 
+    function check_table($elem, $array){
+
+        if (count($array)){
+            foreach ($array as $arr){
+                if (!$this->check_table($arr->element, $arr->all))
+                    return false;
+                if ($arr->element == 'table'){
+                    
+                    $table_array = $arr->all; 
+                    foreach($table_array as $table_row){
+                        if ($table_row->element != 'tr'){
+                            // echo "not in tr\n";
+                            return false;
+                        }
+
+                        $tags = [];
+                        foreach($table_row->all as $table_cont){
+                            if ($table_cont->element != 'th' && $table_cont->element != 'td'){
+                                // echo "not allowed tag for table\n";
+                                return false;
+                            }
+                            array_push($tags, $table_cont->element);
+                        }
+                        if (count(array_unique($tags)) != 1){
+                            // echo "not same tag\n";
+                            return false;
+                        }
+
+                    }
+                   
+                }
+            }
+        }
+        return true;
+    }
+
+
+    function check_ol_li($elem, $array){
+        
+        if (count($array)){
+            foreach ($array as $arr){
+                if (!$this->check_ol_li($arr->element, $arr->all))
+                    return false;
+                if ($arr->element == 'ul' || $arr->element == 'ol'){
+                    foreach ($arr->all as $tags){
+                        if ($tags->element != 'li'){
+                            echo "not li"; 
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
     }
 
 
@@ -140,15 +196,11 @@ class Elem{
         // echo $this->element . "\n";
         // print_r($this->all);
         
-       
-        $this->check_parent_node();
-        $this->check_head();
-        $this->check_p($this->element, $this->all);
+        if (($this->check_parent_node() == false || $this->check_head() == false || $this->check_p($this->element, $this->all) == false || $this->check_table($this->element, $this->all) == false || $this->check_ol_li($this->element, $this->all) == false)){
+            return false;
+        }
 
-
-
-
-        // return true;
+        return true;
     }
 
 
