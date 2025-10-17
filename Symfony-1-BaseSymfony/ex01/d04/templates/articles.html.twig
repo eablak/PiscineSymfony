@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+<style>
+    table{
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 2px solid black;
+        padding: 8px; 
+        text-align: left; 
+    }
+    td ul, td ol{
+        list-style-position: inside; 
+        padding-left: 0;
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+<table>
+        <tr>
+          <th>Articles</th>
+         
+        </tr>
+        <tr>
+            <td>
+                <ol>
+                    <li><a href="/e01/creativity">Creativity Is a Process, Not an Event</a></li>
+                    <li><a href="/e01/productivity">The Ultimate Productivity Hack is Saying No</a></li>
+                    <li><a href="/e01/motivation">What I Do When I Feel Like Giving Up</a></li>
+                </ol>
+            </td>
+        </tr>
+    </table> 
+{% endblock %}
