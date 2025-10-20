@@ -6,7 +6,7 @@ function array2hash($array){
 
     if (count($array)){
         foreach($array as $arr){
-            $hash[$arr[0]] = $arr[1];
+            $hash[$arr[1]] = $arr[0];
         }
     }
 
