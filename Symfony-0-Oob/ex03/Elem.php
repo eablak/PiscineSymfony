@@ -33,7 +33,10 @@ class Elem{
 
         $void_tags = ["meta", "img", "hr", "br"];
         $tab = str_repeat("    ", $repeat);
-        $tab_close = @str_repeat("    ", $repeat-1);
+        $tab_close = "";
+        if ($repeat != 0){
+            $tab_close = @str_repeat("    ", $repeat-1);
+        }
         $html = "$tab<$this->element>";
         
         if (in_array($this->element, $void_tags)){
@@ -47,7 +50,8 @@ class Elem{
         foreach ($this->all as $child)
             $html .= "\n" . $child->getHTML($repeat + 1);
 
-        $tab = @str_repeat("    ", $repeat-1);
+        if ($repeat != 0){
+        $tab = @str_repeat("    ", $repeat-1);}
         $html .= "</{$this->element}>\n$tab_close";
 
         return $html;

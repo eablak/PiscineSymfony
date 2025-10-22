@@ -47,7 +47,10 @@ class Elem{
 
         $void_tags = ["meta", "img", "hr", "br"];
         $tab = str_repeat("    ", $repeat);
-        $tab_close = @str_repeat("    ", $repeat-1);
+        $tab_close = "";
+        if ($repeat != 0){
+            $tab_close = @str_repeat("    ", $repeat-1);
+        }
         $html = "$tab<$this->element";
         $line = "";
 
