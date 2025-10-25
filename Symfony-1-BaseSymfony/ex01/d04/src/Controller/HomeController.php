@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController{
 
-    #[Route('/e00/firstpage', name: 'home', methods: ['GET'])]
+    #[Route('/e01/firstpage', name: 'home', methods: ['GET'])]
     public function index(): Response{
         return $this->render("base.html.twig");
     }
