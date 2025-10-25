@@ -1,6 +1,0 @@
-{
-    "require": {
-        "symfony/form": "^7.3",
-        "symfony/twig-bridge": "^7.3"
-    }
-}
