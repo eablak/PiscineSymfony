@@ -2,10 +2,10 @@
 
 namespace App\Entity;
 
-use Doctorine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
-#[ORM\Table(name:'user')]
+#[ORM\Table(name: 'UserORM')]
 class User{
     
     #[ORM\Id]
@@ -26,10 +26,10 @@ class User{
     private bool $enable;
 
     #[ORM\Column(type: 'datetime')]
-    private datetime $birthdate;
+    private Datetime $birthdate;
 
-    #[ORM\Column(type: 'longtext')]
-    private longtext $address;
+    #[ORM\Column(type: 'text')]
+    private string $address;
 }
 
 

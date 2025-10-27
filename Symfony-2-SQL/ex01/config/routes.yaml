@@ -4,6 +4,8 @@ controllers:
         namespace: App\Controller
     type: attribute
 
+
+
 create_table:
     path: /create_table
     controller: App\Controller\HomeController::create_table
