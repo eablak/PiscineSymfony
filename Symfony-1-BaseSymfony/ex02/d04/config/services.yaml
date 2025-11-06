@@ -18,7 +18,8 @@ services:
 
     App\Controller\HomeController:
         arguments:
-            $pathFile: '/home/eablak/Desktop/PiscineSymfony/Symfony-1-BaseSymfony/ex02/d04/notes.txt'
+            $pathFile: '%kernel.project_dir%/notes.txt'
+
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
