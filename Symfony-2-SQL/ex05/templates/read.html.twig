@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Read Users</title>
+    <style>
+        table{
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 2px solid black;
+            padding: 8px; 
+            text-align: left; 
+        }
+        td ul, td ol{
+            list-style-position: inside; 
+            padding-left: 0;
+        }
+    </style>
+</head>
+<body>
+    {% if results|length > 0%}
+        <table>
+            <tr>
+            <th>UserName</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Enable</th>
+            <th>Birthdate</th>
+            <th>Address</th>
+            <th>Exist</th>
+            
+            </tr>
+
+                {% for result in results %}
+                    <tr>
+                        <td> {{ result.username }} </td>
+                        <td> {{ result.name }} </td>
+                        <td> {{ result.email }} </td>
+                        <td> {{ result.enable }} </td>
+                        <td>{{ result.birthdate|date('Y-m-d H:i:s') }}</td>
+                        <td> {{ result.address }} </td>
+                        <td><a href="/e05/delete/{{ result.id }}"> Delete </a></td>
+                    </tr>
+                {% endfor %}
+        </table> 
+    {% else %}
+        <p>No row in table</p>
+    {% endif %}
+
+    </body>
+</html>
