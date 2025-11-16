@@ -1,0 +1,21 @@
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+
+create_table:
+    path: /create_table
+    controller: App\Controller\HomeController::create_table
+
+add_column:
+    path: /add_column
+    controller: App\Controller\RelationalController::add_column
+
+bank_accounts_table:
+    path: /bank_accounts_table
+    controller: App\Controller\RelationalController::bank_accounts_table
+
+addresses_table:
+    path: /addresses_table
+    controller: App\Controller\RelationalController::addresses_table
