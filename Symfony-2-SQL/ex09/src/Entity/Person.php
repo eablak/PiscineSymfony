@@ -6,7 +6,7 @@ use App\Repository\PersonRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-
+use App\Controller\MaritalStatus;
 
 #[ORM\Entity(repositoryClass: PersonRepository::class)]
 class Person
@@ -31,8 +31,8 @@ class Person
     #[ORM\Column(type: "datetime", nullable: true)]
     private ?\DateTimeInterface $birthdate = null;
 
-    #[ORM\Column(type: "string", length: 10, nullable: false)]
-    private string $maritalStatus;
+    #[ORM\Column(type: "string", enumType:MaritalStatus::class, length: 10, nullable: false)]
+    private ?MaritalStatus $maritalStatus = null;
 
     #[ORM\OneToOne(mappedBy: "person", cascade: ["persist", "remove"])]
     private ?BankAccount $bankAccount = null;
@@ -118,11 +118,11 @@ class Person
         return $this;
     }
 
-    public function getMaritalStatus(){
+    public function getMaritalStatus(): ?MaritalStatus{
         return $this->maritalStatus;
     }
 
-    public function setMaritalStatus($maritalStatus){
+    public function setMaritalStatus(?MaritalStatus $maritalStatus): static{
         $this->maritalStatus = $maritalStatus;
         return $this;
     }
