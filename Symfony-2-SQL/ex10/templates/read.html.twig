@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Read Users</title>
+    <style>
+        table{
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 2px solid black;
+            padding: 8px; 
+            text-align: left; 
+        }
+        td ul, td ol{
+            list-style-position: inside; 
+            padding-left: 0;
+        }
+    </style>
+</head>
+<body>
+    {% if results_sql |length > 0%}
+        <table>
+            <tr>
+            <th>Id</th>
+            <th>Data</th>
+            
+            </tr>
+
+                {% for result in results_sql %}
+                    <tr>
+                        <td> {{ result.id }} </td>
+                        <td> {{ result.text }} </td>
+                    </tr>
+                {% endfor %}
+        </table> 
+    {% else %}
+        <p>No row in table</p>
+    {% endif %}
+
+    <br>
+    <br>
+
+    {% if results_orm |length > 0%}
+        <table>
+            <tr>
+            <th>Id</th>
+            <th>Data</th>
+            
+            </tr>
+
+                {% for result in results_orm %}
+                    <tr>
+                        <td> {{ result.id }} </td>
+                        <td> {{ result.text }} </td>
+                    </tr>
+                {% endfor %}
+        </table> 
+    {% else %}
+        <p>No row in table</p>
+    {% endif %}
+
+    </body>
+</html>

@@ -1,0 +1,13 @@
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+
+insert_data:
+    path: /insert_data
+    controller: App\Controller\HomeController::insert_data
+
+read_table:
+    path: /read_table
+    controller: App\Controller\HomeController::read_table
