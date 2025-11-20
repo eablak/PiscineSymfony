@@ -24,14 +24,8 @@ use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-
-
-
-enum MaritalStatus: string{
-    case Single = 'single';
-    case Married = 'married';
-    case Widower = 'widower';
-}
+use App\Entity\Forms;
+use App\Enum\MaritalStatus;
 
 
 class RelationalController extends AbstractController{
@@ -56,7 +50,7 @@ class RelationalController extends AbstractController{
     }
 
 
-    #[Route('e11/create_person', name:'insert', methods: ['GET', 'POST'])]
+    #[Route('e12/create_person', name:'insert', methods: ['GET', 'POST'])]
     public function create_person(EntityManagerInterface $em, Request $request){
 
 
@@ -98,7 +92,7 @@ class RelationalController extends AbstractController{
     }
 
 
-    #[Route('e11/create_bank_account', name:'bank_acc', methods: ['GET', 'POST'])]
+    #[Route('e12/create_bank_account', name:'bank_acc', methods: ['GET', 'POST'])]
     public function create_bank_account(EntityManagerInterface $em, Request $request){
 
 
@@ -114,7 +108,7 @@ class RelationalController extends AbstractController{
         $form = $this->createFormBuilder($bankform)
             ->add('user_id', TextType::class)
             ->add('account_id', TextType::class)
-            ->add('name', TextType::class)
+            ->add('bank_name', TextType::class)
             ->add('password', TextType::class)
             ->add('person', ChoiceType::class, ['choices' => $choices])
             ->add('submit', SubmitType::class, array('label' => 'Submit'))
@@ -153,40 +147,36 @@ class RelationalController extends AbstractController{
     }
 
 
-    #[Route('e11/tables_data', methods: ['GET', 'POST'])]
-    public function tables_data(Request $request){
+    #[Route('e12/tables_data', methods: ['GET', 'POST'])]
+    public function tables_data(EntityManagerInterface $em, Request $request){
 
-        $sql = "SELECT 
 
-            person.id,
-            person.username,
-            person.name,
-            person.email,
-            person.enable,
-            person.birthdate,
-            person.marital_status,
-            bank_account.person_id,
-            bank_account.user_id,
-            bank_account.account_id,
-            bank_account.bank_name,
-            bank_account.password
-        
-        FROM person INNER JOIN bank_account ON person.id = bank_account.person_id";
+        $qb = $em->createQueryBuilder();
+        $qb->select('p','b')->from(Person::class, 'p')->leftJoin('p.bankAccount', 'b');
 
         $column = $request->query->get('column');
         $value = $request->query->get('value');
         $order = $request->query->get('order');
 
-        
-        if($column && $value){
-            $sql .= " WHERE $column LIKE '%$value%'";
-        }elseif($column && $order){
-            $sql .= " ORDER BY $column $order";
+        if ($column && strpos($column, '.') !== false){
+            $table = substr($column, 0, strpos($column, '.'));
+            $column = substr($column, strpos($column, '.') +1);
+            if ($table === 'bank_account'){
+                $table = 'b';
+            }elseif ($table === 'person'){
+                $table = 'p';}
         }
-        
-        
-        $result_sql = $this->conn->query($sql);
-        return $this->render('read.html.twig', array('results' => $result_sql));
+
+        if ($column && $value) {
+            $qb->andWhere("$table.$column LIKE :value")
+            ->setParameter('value', $value);
+        }elseif ($column && $order) {
+            $qb->orderBy("$table.$column", $order);
+        }
+
+        $result = $qb->getQuery()->getResult();
+
+        return $this->render('read.html.twig', array('results' => $result));
     }
 
 
@@ -195,4 +185,3 @@ class RelationalController extends AbstractController{
 
 
 ?>
-

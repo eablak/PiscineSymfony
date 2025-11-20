@@ -1,16 +1,35 @@
 <?php
 
-namespace App\Entity\Forms;
+namespace App\Entity;
 
-class BankAccountForm{
+use App\Repository\BankAccountRepository;
+use Doctrine\ORM\Mapping as ORM;
 
-    private $user_id;
-    private $account_id;
-    private $bank_name;
-    private $password;
-    private $person = null;
+#[ORM\Entity(repositoryClass: BankAccountRepository::class)]
+class BankAccount
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
 
-     public function getId(): ?int
+    #[ORM\Column]
+    private ?int $user_id = null;
+
+    #[ORM\Column(length: 50)]
+    private ?string $account_id = null;
+
+    #[ORM\Column(length: 50)]
+    private ?string $bank_name = null;
+
+    #[ORM\Column(length: 50)]
+    private ?string $password = null;
+
+    #[ORM\OneToOne(inversedBy: "bankAccount")]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Person $person = null;
+
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -71,18 +90,15 @@ class BankAccountForm{
     }
 
 
-    public function getPerson()
+    public function getPerson(): ?Person
     {
         return $this->person;
     }
 
-    public function setPerson($person): static
+    public function setPerson(Person $person): static
     {
         $this->person = $person;
         return $this;
     }
 
 }
-
-
-?>

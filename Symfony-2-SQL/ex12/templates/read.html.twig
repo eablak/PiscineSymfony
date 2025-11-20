@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Read Users</title>
+    <style>
+        table{
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 2px solid black;
+            padding: 8px; 
+            text-align: left; 
+        }
+        td ul, td ol{
+            list-style-position: inside; 
+            padding-left: 0;
+        }
+    </style>
+</head>
+<body>
+    {% if results |length > 0%}
+        <table>
+            <tr>
+            <th>UserName</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Enable</th>
+            <th>Birthdate</th>
+            <th>Marital Status</th>
+            <th>PersonId</th>
+            <th>UserId</th>
+            <th>AccountId</th>
+            <th>Name</th>
+            <th>Password</th>
+            
+            </tr>
+
+                {% for result in results %}
+                    <tr>
+                        <td> {{ result.username }} </td>
+                        <td> {{ result.name }} </td>
+                        <td> {{ result.email }} </td>
+                        <td> {{ result.enable }} </td>
+                        <td>{{ result.birthdate|date('Y-m-d H:i:s') }}</td>
+                        <td> {{ result.maritalStatus.value }} </td>
+                        <td> {{ result.bankAccount.person.id }} </td>
+                        <td> {{ result.bankAccount.userId }} </td>
+                        <td> {{ result.bankAccount.accountId }} </td>
+                        <td> {{ result.bankAccount.bankName }} </td>
+                        <td> {{ result.bankAccount.password }} </td>
+                        
+                    </tr>
+                {% endfor %}
+        </table> 
+    {% else %}
+        <p>No row in table</p>
+    {% endif %}
+
+    <br>
+    <br>
+
+    <form method="GET">
+        <select name="column">
+            <option value="person.username">UserName</option>
+            <option value="person.birthdate">Birthdate</option>
+            <option value="bank_account.account_id">Account Id</option>
+            <option value="bank_account.bank_name">Bank Name</option>
+        </select>
+
+        <input type="text" name="value" placeholder="Filter Value">
+        
+        <select name="order">
+            <option value="ASC">Ascending</option>
+            <option value="DESC">Descending</option>
+        </select>
+
+        <button>Filter</button>
+        
+    </form>
+    
+
+
+    </body>
+</html>
