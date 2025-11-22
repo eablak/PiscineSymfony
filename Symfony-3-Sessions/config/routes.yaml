@@ -3,3 +3,7 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+ex01_bundle:
+    resource: '../src/Ex01Bundle/Controller/'
+    type: attribute
