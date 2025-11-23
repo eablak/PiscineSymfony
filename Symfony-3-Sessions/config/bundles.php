@@ -14,4 +14,5 @@ return [
     Symfony\Bundle\MonologBundle\MonologBundle::class => ['all' => true],
     Symfony\Bundle\MakerBundle\MakerBundle::class => ['dev' => true],
     App\Ex01Bundle\Ex01Bundle::class => ['all' => true],
+    App\Ex02Bundle\Ex02Bundle::class => ['all' => true],
 ];

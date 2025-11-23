@@ -2,6 +2,7 @@ twig:
     file_name_pattern: '*.twig'
     paths:
         '%kernel.project_dir%/src/Ex01Bundle/Resources/views': Ex01
+        '%kernel.project_dir%/src/Ex02Bundle/Resources/views': Ex02
 
 when@test:
     twig:
