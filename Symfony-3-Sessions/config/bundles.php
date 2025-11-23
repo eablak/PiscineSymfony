@@ -15,4 +15,5 @@ return [
     Symfony\Bundle\MakerBundle\MakerBundle::class => ['dev' => true],
     App\Ex01Bundle\Ex01Bundle::class => ['all' => true],
     App\Ex02Bundle\Ex02Bundle::class => ['all' => true],
+    App\Ex03Bundle\Ex03Bundle::class => ['all' => true],
 ];

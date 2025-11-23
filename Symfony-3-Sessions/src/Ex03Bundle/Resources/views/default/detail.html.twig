@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+    <style>
+        table{
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 2px solid black;
+            padding: 8px; 
+            text-align: left; 
+        }
+        td ul, td ol{
+            list-style-position: inside; 
+            padding-left: 0;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <tr>
+        <th>Title</th>
+        <th>Content</th>
+        <th>Created</th>
+        <th>Author</th>
+        </tr>
+
+        <tr>
+            <td> {{ post.title }} </td>
+            <td> {{ post.content }} </td>
+            <td> {{ post.created|date('Y-m-d H:i:s') }} </td>
+            <td> {{ post.author }} </td>
+        </tr>
+    </table> 
+
+    </body>
+</html>

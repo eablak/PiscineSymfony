@@ -11,3 +11,7 @@ ex01_bundle:
 ex02_bundle:
     resource: '../src/Ex02Bundle/Controller'
     type: attribute
+
+ex03_bundle:
+    resource: '../src/Ex03Bundle/Controller'
+    type: attribute

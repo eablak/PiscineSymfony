@@ -2,6 +2,20 @@
 <html>
 <head>
     <title></title>
+    <style>
+        table{
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 2px solid black;
+            padding: 8px; 
+            text-align: left; 
+        }
+        td ul, td ol{
+            list-style-position: inside; 
+            padding-left: 0;
+        }
+    </style>
 </head>
 <body>
     <h1>Home Page</h1>
@@ -15,6 +29,37 @@
         <br>
         <a href="{{ path('app_register') }}">Register</a>
     {% endif %}
+
+    {% if posts | length > 0 %}
+        <table>
+
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Creation Date</th>
+            </tr>
+
+            {% for post in posts %}
+                <tr>
+                    <td><a href="{{ path('post_detail', {'id': post.id }) }} "> {{ post.title }} </a></td>
+                    <td>{{ post.author }}</td>
+                    <td>{{ post.created|date('Y-m-d H:i:s') }}</td>
+                </tr>
+            {% endfor %}
+
+        </table>
+
+    {% else %}
+        <p>Nothing posted yet.</p>
+    {% endif %}
+
+    <br>
+    {% if app.user %}
+        <a href="{{ path('e03_index' ) }}">
+            <button> Create Post </button>
+        </a>
+    {% endif %}
+    
 
 </body>
 </html>
