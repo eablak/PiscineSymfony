@@ -4,6 +4,7 @@ twig:
         '%kernel.project_dir%/src/Ex01Bundle/Resources/views': Ex01
         '%kernel.project_dir%/src/Ex02Bundle/Resources/views': Ex02
         '%kernel.project_dir%/src/Ex03Bundle/Resources/views': Ex03
+        '%kernel.project_dir%/src/Ex04Bundle/Resources/views': Ex04
 
 when@test:
     twig:

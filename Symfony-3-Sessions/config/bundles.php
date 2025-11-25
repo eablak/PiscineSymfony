@@ -16,4 +16,5 @@ return [
     App\Ex01Bundle\Ex01Bundle::class => ['all' => true],
     App\Ex02Bundle\Ex02Bundle::class => ['all' => true],
     App\Ex03Bundle\Ex03Bundle::class => ['all' => true],
+    App\Ex04Bundle\Ex04Bundle::class => ['all' => true],
 ];

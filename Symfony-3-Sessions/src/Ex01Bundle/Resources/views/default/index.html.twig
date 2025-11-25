@@ -24,7 +24,8 @@
         <p>Welcome {{ app.user.username }}!</p>
         <a href="{{ path('app_logout') }}">Logout</a>
     {% else %}
-        <p>Welcome, Guest!</p>
+        <p>Welcome, Anonymous {{ an_name }}!</p>
+        <p> Since {{ seconds }} the last request was made</p>
         <a href="{{ path('app_login') }}">Login</a>
         <br>
         <a href="{{ path('app_register') }}">Register</a>
