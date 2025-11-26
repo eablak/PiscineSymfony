@@ -8,7 +8,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Post;
 use Symfony\Component\HttpFoundation\RequestStack;
-
+use App\Repository\UserRepository;
+use App\Repository\PostRepository;
+use App\Repository\VoteRepository;
+use App\Entity\Vote;
 
 
 
@@ -40,7 +43,19 @@ class DefaultController extends AbstractController{
 
 
         $posts = $em->getRepository(POST::class)->findBy(array() ,array('created' => 'DESC'));
+
+        $this->amount_vote($posts);
+        
         return $this->render('@Ex01/default/index.html.twig',array('posts' => $posts, 'an_name' => $name, 'seconds' => $secondsSinceLast));
+    }
+
+
+    public function amount_vote(array $posts){
+
+        foreach ($posts as $post){
+            echo($post->getVotes()->count());
+        }
+
     }
 
 }

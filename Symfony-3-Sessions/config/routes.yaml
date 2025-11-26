@@ -19,3 +19,7 @@ ex03_bundle:
 ex04_bundle:
     resource: '../src/Ex04Bundle/Controller'
     type: attribute
+
+ex05_bundle:
+    resource: '../src/Ex05Bundle/Controller'
+    type: attribute

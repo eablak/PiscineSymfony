@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+
+        <style>
+            table{
+                border-collapse: collapse;
+            }
+            th, td {
+                border: 2px solid black;
+                padding: 8px; 
+                text-align: left; 
+            }
+            td ul, td ol{
+                list-style-position: inside; 
+                padding-left: 0;
+            }
+        </style>
+</head>
+<body>
+   
+    <h1>Posts!</h1>
+
+    {% if posts | length > 0%}
+
+        <table>
+    
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Like</th>
+                <th>Dislike</th>
+            </tr>
+
+            {% for post in posts %}
+                <tr>
+                    <td>{{ post.title }}</td>
+                    <td>{{ post.author }}</td>
+                    <td><a href="{{ path('handle_vote', {'user_id': user.id , 'post_id': post.id, 'vote': 1}) }}">Like</a></td>
+                    <td><a href="{{ path('handle_vote', {'user_id': user.id , 'post_id': post.id, 'vote': -1}) }}">Dislike</a></td>
+                  
+
+                </tr>
+            {% endfor %}
+        
+        </table>
+
+            
+    {% else %}
+        <p>No user in db</p>
+    {% endif %}
+
+
+</body>
+</html>
