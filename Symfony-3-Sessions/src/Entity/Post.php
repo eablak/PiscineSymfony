@@ -24,14 +24,17 @@ class Post
     #[ORM\Column]
     private ?\DateTime $created = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $author = null;
+
 
     /**
      * @var Collection<int, Vote>
      */
     #[ORM\OneToMany(targetEntity: Vote::class, mappedBy: 'post')]
     private Collection $votes;
+
+    #[ORM\ManyToOne(inversedBy: 'posts')]
+    #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
+    private ?User $author = null;
 
     public function __construct()
     {
@@ -79,12 +82,12 @@ class Post
         return $this;
     }
 
-    public function getAuthor(): ?string
+    public function getAuthor(): ?User
     {
         return $this->author;
     }
 
-    public function setAuthor(string $author): static
+    public function setAuthor(?User $author): static
     {
         $this->author = $author;
 

@@ -37,7 +37,7 @@ class DefaultController extends AbstractController{
                 $post = new Post();
                 $post->setTitle($data->getTitle());
                 $post->setContent($data->getContent());
-                $post->setAuthor($this->getUser()->getUsername());
+                $post->setAuthor($this->getUser());
                 $post->setCreated(new \DateTime());
 
                 $em->persist($post);

@@ -23,8 +23,14 @@ class DefaultController extends AbstractController{
 
         $posts = $pr->findAll();
         $current_user = $this->getUser();
+        $amounts = [];
+        $reputation = [];
 
-        return $this->render('@Ex05/default/index.html.twig', array('posts' => $posts, 'user' => $current_user));
+        foreach($posts as $post){
+            $amounts[$post->getId()] = $post->getVotes()->count();
+        }
+
+        return $this->render('@Ex05/default/index.html.twig', array('posts' => $posts, 'user' => $current_user, 'amounts' => $amounts));
     }
 
 

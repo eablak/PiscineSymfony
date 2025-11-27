@@ -44,19 +44,10 @@ class DefaultController extends AbstractController{
 
         $posts = $em->getRepository(POST::class)->findBy(array() ,array('created' => 'DESC'));
 
-        $this->amount_vote($posts);
-        
+
         return $this->render('@Ex01/default/index.html.twig',array('posts' => $posts, 'an_name' => $name, 'seconds' => $secondsSinceLast));
     }
 
-
-    public function amount_vote(array $posts){
-
-        foreach ($posts as $post){
-            echo($post->getVotes()->count());
-        }
-
-    }
 
 }
 

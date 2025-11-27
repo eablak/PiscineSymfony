@@ -26,6 +26,7 @@
     
             <tr>
                 <th>User Name</th>
+                <th>Reputation</th>
                 <th>User Role</th>
                 <th>Delete</th>
             </tr>
@@ -33,6 +34,7 @@
             {% for user in users %}
                 <tr>
                     <td>{{ user.username }}</td>
+                    <td>{{ user.getReputation() }}</td>
                     <td>{{ user.roles[0] }}</td>
 
                     {% if app.user.id != user.id %}
