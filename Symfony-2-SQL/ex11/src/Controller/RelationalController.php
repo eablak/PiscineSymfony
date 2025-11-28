@@ -24,14 +24,7 @@ use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-
-
-
-enum MaritalStatus: string{
-    case Single = 'single';
-    case Married = 'married';
-    case Widower = 'widower';
-}
+use App\Enum\MaritalStatus;
 
 
 class RelationalController extends AbstractController{
