@@ -34,7 +34,7 @@ class HomeController extends AbstractController{
     public function create_table(): Response{
 
         $sql = "
-            CREATE TABLE IF NOT EXISTS USERSz (
+            CREATE TABLE IF NOT EXISTS users (
                 id int PRIMARY KEY,
                 username varchar(50) UNIQUE,
                 name varchar(255),

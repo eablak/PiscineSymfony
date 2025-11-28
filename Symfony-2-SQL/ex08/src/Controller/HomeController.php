@@ -51,7 +51,7 @@ class HomeController extends AbstractController{
     public function create_table(): Response{
 
         $sql = "
-            CREATE TABLE IF NOT EXISTS person (
+            CREATE TABLE IF NOT EXISTS persons (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 username varchar(50) UNIQUE,
                 name varchar(255),
@@ -101,7 +101,7 @@ class HomeController extends AbstractController{
                 
                 
                 $sql = "INSERT INTO 
-                person (username, name, email, enable, birthdate, marital_status)
+                persons (username, name, email, enable, birthdate, marital_status)
                 VALUES ('$username', '$name', '$email', '$enable', '$birthdate', '$marital_status')";
 
                 
@@ -121,7 +121,7 @@ class HomeController extends AbstractController{
     #[Route('e08/read', methods: ['GET'])]
     public function read(){
 
-        $sql = "SELECT * FROM person";
+        $sql = "SELECT * FROM persons";
         $results = $this->conn->query($sql);
 
         return $this->render('Home/read.html.twig', array('results' => $results));
@@ -130,11 +130,11 @@ class HomeController extends AbstractController{
     #[Route('e08/delete/{id}', methods: ['GET', 'POST'])]
     public function delete(int $id){
 
-        $sql = "SELECT * FROM person WHERE id=$id";
+        $sql = "SELECT * FROM persons WHERE id=$id";
         $result = $this->conn->query($sql);
 
         if ($result->num_rows > 0){
-            $delete_sql = "DELETE FROM person WHERE id=$id";
+            $delete_sql = "DELETE FROM persons WHERE id=$id";
             $delete_result = $this->conn->query($delete_sql);
             if ($delete_result)
                 return new Response("$id id user succesfully deleted");
@@ -148,7 +148,7 @@ class HomeController extends AbstractController{
     #[Route('e08/update/{id}', name:'update', methods: ['GET', 'POST'])]
     public function update(int $id, Request $request){
 
-        $sql = "SELECT * FROM person WHERE id=$id";
+        $sql = "SELECT * FROM persons WHERE id=$id";
         $result = $this->conn->query($sql);
         $log = "";
 
@@ -190,7 +190,7 @@ class HomeController extends AbstractController{
                     $marital_status = $data->getMaritalStatus();
                     $birthdate = $birthdate->format('Y-m-d H:i:s');
                     
-                    $sql = "UPDATE person SET username='$username', name='$name', email='$email', enable='$enable', birthdate='$birthdate', marital_status='$marital_status' WHERE id=$id";
+                    $sql = "UPDATE persons SET username='$username', name='$name', email='$email', enable='$enable', birthdate='$birthdate', marital_status='$marital_status' WHERE id=$id";
 
                     if ($this->conn->query($sql) === TRUE){
                         error_log("Data updated successfully \n");

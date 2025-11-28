@@ -46,7 +46,7 @@ class RelationalController extends AbstractController{
         }
 
         public function add_column(){
-            $sql = "ALTER TABLE person ADD marital_status enum('single','married', 'widower')";
+            $sql = "ALTER TABLE persons ADD marital_status enum('single','married', 'widower')";
 
             $conn_info = "";
             try{
@@ -74,13 +74,13 @@ class RelationalController extends AbstractController{
     public function bank_accounts_table(){
 
         $sql = "
-            CREATE TABLE IF NOT EXISTS BankAccounts (
+            CREATE TABLE IF NOT EXISTS bank_accounts (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 user_id INT UNIQUE,
                 account_id varchar(50),
                 name varchar(255),
                 password varchar(255),
-                FOREIGN KEY (user_id) REFERENCES person(id) ON DELETE CASCADE
+                FOREIGN KEY (user_id) REFERENCES persons(id) ON DELETE CASCADE
             )";
 
         $conn_info = "";
@@ -96,12 +96,12 @@ class RelationalController extends AbstractController{
     public function addresses_table(){
 
         $sql = "
-            CREATE TABLE IF NOT EXISTS Addresses (
+            CREATE TABLE IF NOT EXISTS addresses (
                 id INT AUTO_INCREMENT PRIMARY KEY,
-                user_id INT,
+                user_id INT UNIQUE,
                 name varchar(255),
                 address varchar(255),
-                FOREIGN KEY (user_id) REFERENCES person(id) ON DELETE CASCADE
+                FOREIGN KEY (user_id) REFERENCES persons(id) ON DELETE CASCADE
             )";
 
         $conn_info = "";

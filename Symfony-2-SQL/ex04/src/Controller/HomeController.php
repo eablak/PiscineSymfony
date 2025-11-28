@@ -50,7 +50,7 @@ class HomeController extends AbstractController{
     public function create_table(): Response{
 
         $sql = "
-            CREATE TABLE IF NOT EXISTS USERS04 (
+            CREATE TABLE IF NOT EXISTS users04 (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 username varchar(50) UNIQUE,
                 name varchar(255),
@@ -101,7 +101,7 @@ class HomeController extends AbstractController{
                 
                 
                 $sql = "INSERT INTO 
-                USERS04 (username, name, email, enable, birthdate, address)
+                users04 (username, name, email, enable, birthdate, address)
                 VALUES ('$username', '$name', '$email', '$enable', '$birthdate', '$address')";
 
                 
@@ -121,7 +121,7 @@ class HomeController extends AbstractController{
     #[Route('e04/read', methods: ['GET'])]
     public function read(){
 
-        $sql = "SELECT * FROM USERS04";
+        $sql = "SELECT * FROM users04";
         $results = $this->conn->query($sql);
 
         return $this->render('read.html.twig', array('results' => $results));
@@ -130,11 +130,11 @@ class HomeController extends AbstractController{
     #[Route('e04/delete/{id}', methods: ['GET', 'POST'])]
     public function delete(int $id){
 
-        $sql = "SELECT * FROM USERS04 WHERE id=$id";
+        $sql = "SELECT * FROM users04 WHERE id=$id";
         $result = $this->conn->query($sql);
 
         if ($result->num_rows > 0){
-            $delete_sql = "DELETE FROM USERS04 WHERE id=$id";
+            $delete_sql = "DELETE FROM users04 WHERE id=$id";
             $delete_result = $this->conn->query($delete_sql);
             if ($delete_result)
                 return new Response("$id id user succesfully deleted");

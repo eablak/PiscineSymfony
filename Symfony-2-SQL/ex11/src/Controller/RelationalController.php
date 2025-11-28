@@ -114,7 +114,7 @@ class RelationalController extends AbstractController{
         $form = $this->createFormBuilder($bankform)
             ->add('user_id', TextType::class)
             ->add('account_id', TextType::class)
-            ->add('name', TextType::class)
+            ->add('bank_name', TextType::class)
             ->add('password', TextType::class)
             ->add('person', ChoiceType::class, ['choices' => $choices])
             ->add('submit', SubmitType::class, array('label' => 'Submit'))

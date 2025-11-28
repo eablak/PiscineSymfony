@@ -24,14 +24,7 @@ use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-
-
-
-enum MaritalStatus: string{
-    case Single = 'single';
-    case Married = 'married';
-    case Widower = 'widower';
-}
+use App\Enum\MaritalStatus;
 
 
 class RelationalController extends AbstractController{
@@ -231,7 +224,7 @@ class RelationalController extends AbstractController{
     }
 
     
-    #[Route('e09/update_address/{id}', name:'bank_acc', methods: ['GET', 'POST'])]
+    #[Route('e09/update_address/{id}', name:'update_add', methods: ['GET', 'POST'])]
     public function update_address(EntityManagerInterface $em, Request $request, int $id){
 
         $add = $em->getRepository(Address::class)->findBy(array('id'=>$id));

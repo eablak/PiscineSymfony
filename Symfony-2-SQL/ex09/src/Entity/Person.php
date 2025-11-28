@@ -6,7 +6,7 @@ use App\Repository\PersonRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use App\Controller\MaritalStatus;
+use App\Enum\MaritalStatus;
 
 #[ORM\Entity(repositoryClass: PersonRepository::class)]
 class Person

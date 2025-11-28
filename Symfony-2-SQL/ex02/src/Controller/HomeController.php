@@ -50,7 +50,7 @@ class HomeController extends AbstractController{
     public function create_table(): Response{
 
         $sql = "
-            CREATE TABLE IF NOT EXISTS USERS02 (
+            CREATE TABLE IF NOT EXISTS users02 (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 username varchar(50) UNIQUE,
                 name varchar(255),
@@ -101,7 +101,7 @@ class HomeController extends AbstractController{
                 
                 
                 $sql = "INSERT INTO 
-                USERS02 (username, name, email, enable, birthdate, address)
+                users02 (username, name, email, enable, birthdate, address)
                 VALUES ('$username', '$name', '$email', '$enable', '$birthdate', '$address')";
 
                 
@@ -121,7 +121,7 @@ class HomeController extends AbstractController{
     #[Route('e02/read', methods: ['GET'])]
     public function read(){
 
-        $sql = "SELECT * FROM USERS02";
+        $sql = "SELECT * FROM users02";
         $results = $this->conn->query($sql);
 
         return $this->render('read.html.twig', array('results' => $results));
