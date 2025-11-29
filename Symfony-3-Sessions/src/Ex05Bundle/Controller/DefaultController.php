@@ -43,6 +43,19 @@ class DefaultController extends AbstractController{
         if ($votes)
             return new Response("You can't vote again");
         
+        if ($vote == -1){
+            if (!($this->getUser()->getReputation() >= 6 || $this->getUser()->getRoles()[0] == "ROLE_ADMIN")){
+                return new Response ("You dont have a accessibility to dislike this post");
+            }
+        }elseif($vote == 1){
+            if (!($this->getUser()->getReputation() >= 3 || $this->getUser()->getRoles()[0] == "ROLE_ADMIN")){
+                return new Response ("You dont have a accessibility to like this post");
+            }
+        }else{
+            return new Response ("Invalid vote");
+        }
+
+
         $post = $pr->find($post_id);
 
         $vote_entity = new Vote();

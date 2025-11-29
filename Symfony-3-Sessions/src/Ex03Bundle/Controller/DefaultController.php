@@ -24,6 +24,11 @@ class DefaultController extends AbstractController{
     #[Route('/', name: 'e03_index')]
     public function index(Request $request, EntityManagerInterface $em): Response{
 
+        if (!($this->getUser()->GetReputation() >= 0 || $this->getUser()->getRoles()[0] == "ROLE_ADMIN")){
+            return new Response ("You dont have a accessibility to create this post");
+        }
+
+
         $postform = new PostForm();
         $form = $this->createFormBuilder($postform)->add('title', TextType::class)->add('content', TextareaType::class)->add('submit', SubmitType::class, array('label' => 'Submit'))->getForm();
 

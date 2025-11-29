@@ -31,6 +31,10 @@ class DefaultController extends AbstractController{
         if (!$post)
             return new Response("No Post");
 
+        $current_user = $this->getUser();
+        if (!($current_user == $post->getAuthor() || $current_user->getReputation() >= 9 || $current_user->getRoles()[0] == "ROLE_ADMIN"))
+            return new Response ("You dont have a accessibility to edit this post");
+
 
         $form = $this->createFormBuilder($post)
             ->add('title', TextType::class)
