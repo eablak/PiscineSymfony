@@ -47,10 +47,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Post::class, mappedBy: 'author')]
     private Collection $posts;
 
+    /**
+     * @var Collection<int, Post>
+     */
+    #[ORM\OneToMany(targetEntity: Post::class, mappedBy: 'lastEditedUser')]
+    private Collection $editedPosts;
+
     public function __construct()
     {
         $this->votes = new ArrayCollection();
         $this->posts = new ArrayCollection();
+        $this->editedPosts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -206,6 +213,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $reputation;
+    }
+
+    /**
+     * @return Collection<int, Post>
+     */
+    public function getEditedPosts(): Collection
+    {
+        return $this->editedPosts;
+    }
+
+    public function addEditedPost(Post $editedPost): static
+    {
+        if (!$this->editedPosts->contains($editedPost)) {
+            $this->editedPosts->add($editedPost);
+            $editedPost->setLastEditedUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEditedPost(Post $editedPost): static
+    {
+        if ($this->editedPosts->removeElement($editedPost)) {
+            // set the owning side to null (unless already changed)
+            if ($editedPost->getLastEditedUser() === $this) {
+                $editedPost->setLastEditedUser(null);
+            }
+        }
+
+        return $this;
     }
 
 }

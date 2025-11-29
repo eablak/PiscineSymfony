@@ -21,7 +21,7 @@
 </head>
 <body>
    
-    <h1>Posts!</h1>
+    <h1>Posts Detail!</h1>
 
     {% if posts | length > 0%}
 
@@ -34,6 +34,7 @@
                 <th>Like</th>
                 <th>Dislike</th>
                 <th>Amount Vote</th>
+                <th>Edit</th>
             </tr>
 
             {% for post in posts %}
@@ -44,6 +45,7 @@
                     <td><a href="{{ path('handle_vote', {'user_id': user.id , 'post_id': post.id, 'vote': 1}) }}">Like</a></td>
                     <td><a href="{{ path('handle_vote', {'user_id': user.id , 'post_id': post.id, 'vote': -1}) }}">Dislike</a></td>
                     <td>{{ amounts[post.id] }}</td>
+                    <td><a href="{{ path('edit_post', {'post_id': post.id}) }}">Edit</a></td>
                   
 
                 </tr>

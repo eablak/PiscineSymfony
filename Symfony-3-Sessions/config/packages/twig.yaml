@@ -6,6 +6,7 @@ twig:
         '%kernel.project_dir%/src/Ex03Bundle/Resources/views': Ex03
         '%kernel.project_dir%/src/Ex04Bundle/Resources/views': Ex04
         '%kernel.project_dir%/src/Ex05Bundle/Resources/views': Ex05
+        '%kernel.project_dir%/src/Ex06Bundle/Resources/views': Ex06
 
 when@test:
     twig:

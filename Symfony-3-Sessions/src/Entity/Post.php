@@ -36,6 +36,12 @@ class Post
     #[ORM\JoinColumn(nullable: false, onDelete: "CASCADE")]
     private ?User $author = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTime $lastEditedTime = null;
+
+    #[ORM\ManyToOne(inversedBy: 'editedPosts')]
+    private ?User $lastEditedUser = null;
+
     public function __construct()
     {
         $this->votes = new ArrayCollection();
@@ -120,6 +126,30 @@ class Post
                 $vote->setPost(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLastEditedTime(): ?\DateTime
+    {
+        return $this->lastEditedTime;
+    }
+
+    public function setLastEditedTime(?\DateTime $lastEditedTime): static
+    {
+        $this->lastEditedTime = $lastEditedTime;
+
+        return $this;
+    }
+
+    public function getLastEditedUser(): ?User
+    {
+        return $this->lastEditedUser;
+    }
+
+    public function setLastEditedUser(?User $lastEditedUser): static
+    {
+        $this->lastEditedUser = $lastEditedUser;
 
         return $this;
     }

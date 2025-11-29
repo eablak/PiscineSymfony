@@ -31,9 +31,17 @@
             <td> {{ post.title }} </td>
             <td> {{ post.content }} </td>
             <td> {{ post.created|date('Y-m-d H:i:s') }} </td>
-            <td> {{ post.author }} </td>
+            <td> {{ post.author.username }} </td>
         </tr>
     </table> 
+
+    <br>
+
+    {% if post.lastEditedTime %}
+        <p>This post edited by {{post.lastEditedUser.username}} at {{post.lastEditedTime|date('Y-m-d H:i:s')}}</p>
+    {% else %}
+        <p>This post not edited</p>
+    {% endif %}
 
     </body>
 </html>
