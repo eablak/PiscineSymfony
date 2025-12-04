@@ -300,7 +300,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         },
  *     },
  *     translator?: bool|array{ // Translator configuration
- *         enabled?: bool, // Default: false
+ *         enabled?: bool, // Default: true
  *         fallbacks?: list<scalar|null>,
  *         logging?: bool, // Default: false
  *         formatter?: scalar|null, // Default: "translator.formatter.default"
@@ -738,6 +738,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         services?: ServicesConfig,
  *         framework?: FrameworkConfig,
  *         twig?: TwigConfig,
+ *         d07?: D07Config,
  *     },
  *     "when@prod"?: array{
  *         imports?: ImportsConfig,
@@ -745,6 +746,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         services?: ServicesConfig,
  *         framework?: FrameworkConfig,
  *         twig?: TwigConfig,
+ *         d07?: D07Config,
  *     },
  *     "when@test"?: array{
  *         imports?: ImportsConfig,
@@ -752,6 +754,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         services?: ServicesConfig,
  *         framework?: FrameworkConfig,
  *         twig?: TwigConfig,
+ *         d07?: D07Config,
  *     },
  *     ...<string, ExtensionType|array{ // extra keys must follow the when@%env% pattern or match an extension alias
  *         imports?: ImportsConfig,

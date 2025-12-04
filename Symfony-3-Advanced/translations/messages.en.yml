@@ -1,0 +1,6 @@
+ex02:
+  number: "The config number is %number%"
+  count:
+    none: "none"
+    one: "one"
+    many: "number %count%"

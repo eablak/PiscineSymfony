@@ -9,3 +9,7 @@
 
 controllers:
     resource: routing.controllers
+
+d07_bundle:
+    resource: '../src/D07Bundle/Controller/'
+    type: attribute

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title></title>
+
+    </head>
+    <body>
+
+        <p>{{ 'ex02.number'|trans({'%number%': number}) }}</p>
+        {% if count == 0 %}
+            <p>{{ 'ex02.count.none'|trans}}</p>
+        {% elseif count == 1 %}
+            <p>{{ 'ex02.count.one'|trans}}</p>
+        {% else %}
+            <p>{{ 'ex02.count.many'|trans({'%count%': count}) }}</p>
+        {% endif %}
+        
+    </body>
+</html>
