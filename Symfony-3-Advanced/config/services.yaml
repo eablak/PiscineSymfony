@@ -19,5 +19,14 @@ services:
     App\:
         resource: '../src/'
 
+    App\Service\Ex03Service:
+            public: true
+
+    App\D07Bundle\Twig\Ex03Extension:
+            tags: ['twig.extension']
+            arguments: 
+               $ex03service: '@App\Service\Ex03Service'
+
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

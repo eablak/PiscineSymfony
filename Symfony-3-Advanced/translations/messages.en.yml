@@ -4,3 +4,7 @@ ex02:
     none: "none"
     one: "one"
     many: "number %count%"
+
+
+ex03:
+  content: "hel3lo how ar1e y4ou"

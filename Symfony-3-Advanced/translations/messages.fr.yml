@@ -4,3 +4,7 @@ ex02:
     none: "aucun"
     one: "un"
     many: "nombre %count%"
+
+
+ex03:
+  content: "bonj3our com3ment al1lez-v5ous"
