@@ -6,6 +6,7 @@ use App\Repository\PostRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Post
 {
     #[ORM\Id]
@@ -21,6 +22,12 @@ class Post
 
     #[ORM\Column]
     private ?\DateTime $created = null;
+
+    #[ORM\PrePersist]
+    public function setCreatedAtValue(): void
+    {
+        $this->created = new \DateTime();
+    }
 
     public function getId(): ?int
     {
