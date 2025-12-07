@@ -15,7 +15,7 @@ final class UserController extends AbstractController
     public function loginAction(Request $request, AuthenticationUtils $authenticationUtils)
     {
 
-        if($request->request->get('some_var_name') && $this->getUser()){
+        if($request->request->get('login_ajax') && $this->getUser()){
             $arrData = ['output' => 'Successfully logged in!'];
             return new JsonResponse($arrData);
         }
@@ -28,6 +28,7 @@ final class UserController extends AbstractController
 
 
     #[Route('/login_check', name: 'app_login_check', methods: ['POST'])]
-    public function loginCheck(){ 
+    public function loginCheck(){
+   
     }
 }

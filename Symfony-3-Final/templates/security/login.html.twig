@@ -48,7 +48,7 @@
                             url:'{{ (path('app_login')) }}',
                             type: "POST",
                             dataType: "json",
-                            data: formData + "&some_var_name=some_var_value",
+                            data: formData + "&login_ajax=logged_ajax",
                             async: true,
                             success: function (data)
                             {

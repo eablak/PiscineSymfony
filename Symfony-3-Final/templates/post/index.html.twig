@@ -1,0 +1,152 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+
+    <style> 
+        #simpleform { 
+            width:600px; 
+            border:2px solid grey; 
+            padding:14px; 
+        }  
+        #simpleform label { 
+            font-size:14px; 
+            float:left; 
+            width:300px; 
+            text-align:right; 
+            display:block; 
+        }  
+        #simpleform span { 
+            font-size:11px; 
+            color:grey; 
+            width:100px; 
+            text-align:right; 
+            display:block; 
+        }  
+        #simpleform input { 
+            border:1px solid grey; 
+            font-family:verdana; 
+            font-size:14px;
+            color:light blue; 
+            height:24px; 
+            width:250px; 
+            margin: 0 0 10px 10px; 
+        }  
+        #simpleform textarea { 
+            border:1px solid grey; 
+            font-family:verdana; 
+            font-size:14px; 
+            color:light blue; 
+            height:120px; 
+            width:250px; 
+            margin: 0 0 20px 10px; 
+        }  
+        #simpleform select { 
+            margin: 0 0 20px 10px; 
+        }  
+        #simpleform button { 
+            clear:both; 
+            margin-left:500px; 
+            background: grey; 
+            color:#FFFFFF; 
+            border:solid 1px #666666; 
+            font-size:17px; 
+        } 
+    </style>
+
+    <div id="ajax-results"></div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                
+    {% if login == 'false' %}
+
+        <form method="post" action="{{ path('defaultAction') }}" id="login-form">
+
+            <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+            <label for="username">Username</label>
+            <input type="text" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="username" required autofocus>
+            <label for="password">Password</label>
+            <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
+            <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
+
+            <button type="submit" class="ajax-login">Sign in</button>
+        </form>
+
+        <script>
+
+            $(document).on('click', 'button.ajax-login', function(e){
+                that = $(this);
+                e.preventDefault();
+                var formData = $('#login-form').serialize();
+
+                $.ajax({
+                    url: '{{ path('app_login_check' )}}',
+                    type: "POST",
+                    data: formData,
+                    async: true,
+                    success: function(data) {
+
+                    $.ajax({
+                        url:'{{ (path('defaultAction')) }}',
+                        type: "POST",
+                        dataType: "json",
+                        data: formData + "&login_ajax=logged_ajax",
+                        async: true,
+                        success: function (data)
+                        {
+                            if (data.output) {
+                            $('div#ajax-results').html(data.output);
+                            } else {
+                                $('div#ajax-results').html('Invalid credits');
+                            }
+
+                        }
+                    });
+                }})
+            })
+
+        </script>
+
+
+
+    {% elseif login == 'true' %}
+
+        <div id="post-form"> 
+            {{ form_start(postForm, {'attr': {'id': 'post-form'}}) }} 
+            {{ form_widget(postForm) }} 
+            {{ form_end(postForm) }} 
+        </div> 
+
+        <div id="post-result"></div>
+
+        <script>
+
+            $(document).on('submit', '#post-form', function(e){
+                e.preventDefault();
+                var formData = $(this).serialize();
+
+                $.ajax({
+                    url: '{{path('defaultAction') }}',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: formData,
+                    success: function(data){
+                        if (data.success){
+                            $('#post-result').html(data.success);
+                        }
+                    }
+                });
+
+                return false;
+            });
+
+        </script>
+
+
+    {% endif %}
+
+
+
+
+
+{% endblock %}
