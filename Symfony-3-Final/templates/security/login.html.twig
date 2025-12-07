@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+    <form method="post" action="{{ path('app_login') }}" id="login-form">
+        {% if error %}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+
+
+        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+        <label for="username">Username</label>
+        <input type="text" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="username" required autofocus>
+        <label for="password">Password</label>
+        <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
+        <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
+
+        {#
+            Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+            See https://symfony.com/doc/current/security/remember_me.html
+
+            <div class="checkbox mb-3">
+                <input type="checkbox" name="_remember_me" id="_remember_me">
+                <label for="_remember_me">Remember me</label>
+            </div>
+        #}
+
+
+        <button class="ajax">Sign in</button>
+        <div id="ajax-results"></div>
+        
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
+            $(document).on('click', 'button.ajax', function(e){
+                that = $(this);
+                e.preventDefault();
+                var formData = $('#login-form').serialize();
+
+                $.ajax({
+                    url: '{{ path('app_login_check' )}}',
+                    type: "POST",
+                    data: formData,
+                    async: true,
+                    success: function(data) {
+
+                        $.ajax({
+                            url:'{{ (path('app_login')) }}',
+                            type: "POST",
+                            dataType: "json",
+                            data: formData + "&some_var_name=some_var_value",
+                            async: true,
+                            success: function (data)
+                            {
+                                console.log(data)
+                                $('div#ajax-results').html(data.output);
+
+                            }
+                        });
+
+                    }
+                })
+
+                return false;
+
+            });
+        </script>
+    </form>
+{% endblock %}
