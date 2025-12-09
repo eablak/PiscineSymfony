@@ -14,19 +14,23 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Post;
+use App\Repository\PostRepository;
 
 
 final class PostController extends AbstractController
 {
     #[Route('/', name: 'defaultAction', methods: ['GET', 'POST'])]
-    public function defaultAction(Request $request, AuthenticationUtils $authenticationUtils, EntityManagerInterface $em)
+    public function defaultAction(Request $request, AuthenticationUtils $authenticationUtils, EntityManagerInterface $em, PostRepository $pr)
     {
         
+        $posts = $em->getRepository(Post::class)->findAll();
+
+
         if(!$this->getUser()){
             $error = $authenticationUtils->getLastAuthenticationError();
             $last_username = $authenticationUtils->getLastUsername();
 
-            return $this->render('post/index.html.twig', array('login' => 'false' , 'error' => $error, 'last_username' => $last_username));
+            return $this->render('post/index.html.twig', array('login' => 'false' , 'error' => $error, 'last_username' => $last_username, 'posts' => $posts));
         }
 
         if($request->request->get('login_ajax') && $this->getUser()){
@@ -44,14 +48,23 @@ final class PostController extends AbstractController
 
             $em->persist($post);
             $em->flush();
-            return new JsonResponse(['success' => 'Successfully posted!']);
+
+            $posts = $em->getRepository(Post::class)->findAll();
+
+            $post_table = $this->renderView('post/postTable.html.twig', ['posts' => $posts]);
+
+            return new JsonResponse(['success' => 'Successfully posted!', 'post_table' => $post_table]);
+        }   
+        if ($request->isXmlHttpRequest() && $form->isSubmitted() && !$form->isValid()){
+            return new JsonResponse(['error' => 'Invalid Post!']);
         }
 
-        return $this->render('post/index.html.twig', array('login' => 'true','postForm' => $form->createView()));
+        return $this->render('post/index.html.twig', array('login' => 'true','postForm' => $form->createView(), 'posts' => $posts));
     }
 
 
     #[Route('/login_check', name: 'app_login_check', methods: ['POST'])]
     public function loginCheck(){ 
     }
+
 }

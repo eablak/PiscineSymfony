@@ -53,6 +53,21 @@
             border:solid 1px #666666; 
             font-size:17px; 
         } 
+
+
+
+        table{
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 2px solid black;
+            padding: 8px; 
+            text-align: left; 
+        }
+        td ul, td ol{
+            list-style-position: inside; 
+            padding-left: 0;
+        }
     </style>
 
     <div id="ajax-results"></div>
@@ -137,6 +152,12 @@
                         if (data.success){
                             $('#post-result').html(data.success);
                         }
+                        if (data.post_table){
+                            $('#post-list').replaceWith(data.post_table);
+                        }
+                        if (data.error){
+                            alert("Error! Exsisting title!");
+                        }
                     },
                     error: function(data) { 
                         $('div#ajax-results').html('Error! Cant post!');
@@ -152,7 +173,7 @@
     {% endif %}
 
 
-
+    {% include 'post/postTable.html.twig' %}
 
 
 {% endblock %}
