@@ -11,8 +11,49 @@
 
         {% for post in posts %}
             <tr>
-                <td> {{ post.title }} </td>
+                <td><a href="{{ path( 'viewAction', {'id': post.id} )}} " class="titleAction">{{ post.title }} </a></td>
                 <td>{{ post.created|date('Y-m-d H:i:s') }}</td>
             </tr>
         {% endfor %}
+
 </table> 
+
+<div id="response"></div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(function() {
+        $('#post-list').on('click', '.titleAction', function(event) {
+            event.preventDefault();
+
+            $.ajax({
+            url: this.href,
+            type: 'GET',
+            success: function(response) {
+                const data = response.response;
+                const html = `
+                <br>
+                <br>
+                <table>
+                    <tr>
+                        <th>Title</th>
+                        <th>Content</th>
+                        <th>Created Date</th>
+                    </tr>
+                
+                    <tr>
+                        <td><p>${data.title}</p></td>
+                        <td><p>${data.content}</p></td>
+                        <td><p>${data.created}</p></td>
+                    </tr>
+
+                `;
+                $('#response').html(html);
+            },
+            error: function() {
+                $('#response').html('An error occurred while processing the request.');
+            }
+        });
+    });
+});
+</script>

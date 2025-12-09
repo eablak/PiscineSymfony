@@ -67,4 +67,18 @@ final class PostController extends AbstractController
     public function loginCheck(){ 
     }
 
+
+    #[Route('/view/{id}', name: 'viewAction')]
+    public function viewAction(int $id, PostRepository $pr, EntityManagerInterface $em){
+
+        $post = $em->getRepository(Post::class)->findOneBy(['id' => $id]);
+        if (!$post){
+            return new JsonResponse(['response' => 'No Post!']);
+        }
+        
+        $post_detail = ['title' => $post->getTitle(), 'content' => $post->getContent(), 'created' => $post->getCreated()->format('Y-m-d H:i:s')];
+        return new JsonResponse(['response' => $post_detail]);
+
+    }
+
 }
