@@ -6,6 +6,9 @@
     <tr>
     <th>Title</th>
     <th>Created Date</th>
+    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+        <th>Delete</th>
+    {% endif %}
     
     </tr>
 
@@ -13,6 +16,10 @@
             <tr>
                 <td><a href="{{ path( 'viewAction', {'id': post.id} )}} " class="titleAction">{{ post.title }} </a></td>
                 <td>{{ post.created|date('Y-m-d H:i:s') }}</td>
+                {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                    <td><a href="{{ path( 'deleteAction', {'id': post.id} )}} " class="postDelete"> Delete </a></td>
+                {% endif %}
+
             </tr>
         {% endfor %}
 
@@ -21,6 +28,9 @@
 <div id="response"></div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
 <script>
 $(function() {
         $('#post-list').on('click', '.titleAction', function(event) {
@@ -54,6 +64,37 @@ $(function() {
                 $('#response').html('An error occurred while processing the request.');
             }
         });
+    });
+});
+
+
+$(function() {
+        $('#post-list').on('click', '.postDelete', function(event) {
+            event.preventDefault();
+            const deleteUrl = this.href;
+
+        $.confirm({
+            title: 'Confirm!',
+            content: 'Are you sure to delete post?',
+            type: 'red',
+            typeAnimated: true,
+            boxWidth: '30%',
+            useBootstrap: false,
+            buttons: {
+                confirm: function() {
+                    $.ajax({
+                        url: deleteUrl,
+                        type: "POST",
+                        success: function(response) {
+                            $('#response').html(response);
+                        }
+                    });
+                },
+                cancel: function() {}
+            }
+        });
+
+    
     });
 });
 </script>

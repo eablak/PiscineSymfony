@@ -81,4 +81,19 @@ final class PostController extends AbstractController
 
     }
 
+
+    #[Route('/delete/{id}', name: 'deleteAction')]
+    public function deleteAction(int $id, PostRepository $pr, EntityManagerInterface $em){
+
+        $post = $em->getRepository(Post::class)->findOneBy(['id' => $id]);
+        if (!$post){
+            return new JsonResponse(['response' => 'No Post!']);
+        }
+
+        $em->remove($post);
+        $em->flush();
+        return new JsonResponse(['response' => 'deleted!']);
+
+    }
+
 }
