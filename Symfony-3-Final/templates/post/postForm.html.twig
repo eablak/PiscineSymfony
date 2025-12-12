@@ -1,0 +1,61 @@
+<div id="postForm-container">
+
+    <style> 
+            #post-form { 
+                width:600px; 
+                border:2px solid grey; 
+                padding:14px; 
+            }  
+            #post-form label { 
+                font-size:14px; 
+                float:left; 
+                width:300px; 
+                text-align:right; 
+                display:block; 
+            }  
+            #post-form span { 
+                font-size:11px; 
+                color:grey; 
+                width:100px; 
+                text-align:right; 
+                display:block; 
+            }  
+            #post-form input { 
+                border:1px solid grey; 
+                font-family:verdana; 
+                font-size:14px;
+                color:light blue; 
+                height:24px; 
+                width:250px; 
+                margin: 0 0 10px 10px; 
+            }  
+            #post-form textarea { 
+                border:1px solid grey; 
+                font-family:verdana; 
+                font-size:14px; 
+                color:light blue; 
+                height:120px; 
+                width:250px; 
+                margin: 0 0 20px 10px; 
+            }  
+            #post-form select { 
+                margin: 0 0 20px 10px; 
+            }  
+            #post-form button { 
+                clear:both; 
+                margin-left:500px; 
+                background: grey; 
+                color:#FFFFFF; 
+                border:solid 1px #666666; 
+                font-size:17px; 
+            } 
+    </style>
+
+    <form id="post-form">
+        {{ form_start(postForm, {'attr': {'id': 'post-form'}}) }} 
+        {{ form_widget(postForm) }} 
+        {{ form_end(postForm) }} 
+
+    </form>
+
+</div>

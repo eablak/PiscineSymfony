@@ -1,0 +1,32 @@
+<br>
+<br>
+
+<style> 
+    table{
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 2px solid black;
+        padding: 8px; 
+        text-align: left; 
+    }
+    td ul, td ol{
+        list-style-position: inside; 
+        padding-left: 0;
+    }
+</style>
+
+
+<table id="postDetail">
+    <tr>
+        <th>Title</th>
+        <th>Content</th>
+        <th>Created Date</th>
+    </tr>
+
+    <tr>
+        <td><p>{{ postDetail.title }}</p></td>
+        <td><p>{{ postDetail.content }}</p></td>
+        <td><p>{{ postDetail.created }}</p></td>
+    </tr>
+</table>

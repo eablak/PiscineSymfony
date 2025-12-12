@@ -1,0 +1,219 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+
+    <style> 
+        #post-form { 
+            width:600px; 
+            border:2px solid grey; 
+            padding:14px; 
+        }  
+        #post-form label { 
+            font-size:14px; 
+            float:left; 
+            width:300px; 
+            text-align:right; 
+            display:block; 
+        }  
+        #post-form span { 
+            font-size:11px; 
+            color:grey; 
+            width:100px; 
+            text-align:right; 
+            display:block; 
+        }  
+        #post-form input { 
+            border:1px solid grey; 
+            font-family:verdana; 
+            font-size:14px;
+            color:light blue; 
+            height:24px; 
+            width:250px; 
+            margin: 0 0 10px 10px; 
+        }  
+        #post-form textarea { 
+            border:1px solid grey; 
+            font-family:verdana; 
+            font-size:14px; 
+            color:light blue; 
+            height:120px; 
+            width:250px; 
+            margin: 0 0 20px 10px; 
+        }  
+        #post-form select { 
+            margin: 0 0 20px 10px; 
+        }  
+        #post-form button { 
+            clear:both; 
+            margin-left:500px; 
+            background: grey; 
+            color:#FFFFFF; 
+            border:solid 1px #666666; 
+            font-size:17px; 
+        } 
+
+
+
+        table{
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 2px solid black;
+            padding: 8px; 
+            text-align: left; 
+        }
+        td ul, td ol{
+            list-style-position: inside; 
+            padding-left: 0;
+        }
+    </style>
+
+    <div id="ajax-results"></div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                
+    {% if login == 'false' %}
+
+        <form method="post" action="{{ path('defaultAction') }}" id="login-form">
+
+            <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+            <label for="username">Username</label>
+            <input type="text" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="username" required autofocus>
+            <label for="password">Password</label>
+            <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
+            <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
+
+            <button type="submit" class="ajax-login">Sign in</button>
+        </form>
+
+        <script>
+
+            
+
+        </script>
+
+
+
+    {% elseif login == 'true' %}
+
+            {{ form_start(postForm, {'attr': {'id': 'post-form'}}) }} 
+            {{ form_widget(postForm) }} 
+            {{ form_end(postForm) }} 
+
+        <div id="post-result"></div>
+
+        <script>
+
+            $(document).on('submit', '#post-form', function(e){
+                e.preventDefault();
+                var formData = $(this).serialize();
+
+                $.ajax({
+                    url: '{{path('defaultAction') }}',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: formData,
+                    success: function(data){
+                        if (data.success){
+                            $('#post-result').html(data.success);
+                        }
+                        if (data.post_table){
+                            $('#post-list').replaceWith(data.post_table);
+                        }
+                        if (data.error){
+                            alert("Error! Exsisting title!");
+                        }
+                    },
+                    error: function(data) { 
+                        $('div#ajax-results').html('Error! Cant post!');
+                }
+                });
+
+                return false;
+            });
+
+        </script>
+
+
+    {% endif %}
+
+
+    {% include 'post/postTable.html.twig' %}
+
+
+{% endblock %}
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.js"></script>
+
+<script>
+$(function() {
+        $('#post-list').on('click', '.titleAction', function(event) {
+            event.preventDefault();
+
+            $.ajax({
+            url: this.href,
+            type: 'GET',
+            success: function(response) {
+                const data = response.response;
+                const html = `
+                <br>
+                <br>
+                <table>
+                    <tr>
+                        <th>Title</th>
+                        <th>Content</th>
+                        <th>Created Date</th>
+                    </tr>
+                
+                    <tr>
+                        <td><p>${data.title}</p></td>
+                        <td><p>${data.content}</p></td>
+                        <td><p>${data.created}</p></td>
+                    </tr>
+
+                `;
+                $('#response').html(html);
+            },
+            error: function() {
+                $('#response').html('An error occurred while processing the request.');
+            }
+        });
+    });
+});
+
+
+$(function() {
+        $('#post-list').on('click', '.postDelete', function(event) {
+            event.preventDefault();
+            const deleteUrl = this.href;
+
+        $.confirm({
+            title: 'Confirm!',
+            content: 'Are you sure to delete post?',
+            type: 'red',
+            typeAnimated: true,
+            boxWidth: '30%',
+            useBootstrap: false,
+            buttons: {
+                confirm: function() {
+                    $.ajax({
+                        url: deleteUrl,
+                        type: "POST",
+                        success: function(response) {
+                            $('#response').html(response);
+                        }
+                    });
+                },
+                cancel: function() {}
+            }
+        });
+
+    
+    });
+});
+</script>

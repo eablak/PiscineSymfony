@@ -15,6 +15,15 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Post;
 use App\Repository\PostRepository;
+use App\Repository\UserRepository;
+use App\Entity\User;
+use Symfony\Component\Security\Core\Authentication\AuthenticationProviderManager;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+
+
 
 
 final class PostController extends AbstractController
@@ -27,45 +36,83 @@ final class PostController extends AbstractController
 
 
         if(!$this->getUser()){
-            $error = $authenticationUtils->getLastAuthenticationError();
-            $last_username = $authenticationUtils->getLastUsername();
-
-            return $this->render('post/index.html.twig', array('login' => 'false' , 'error' => $error, 'last_username' => $last_username, 'posts' => $posts));
+            return $this->render('post/index.html.twig', array('posts' => $posts));
         }
 
-        if($request->request->get('login_ajax') && $this->getUser()){
-            $arrData = ['output' => 'Successfully logged in!'];
-            return new JsonResponse($arrData);
+        $post = new Post();
+        $form = $this->createForm(PostFormType::class, $post);
+
+        return $this->render('post/index.html.twig', array('postForm' => $form->createView(), 'posts' => $posts));
+    }
+
+
+    #[Route('/ajax/login', name: 'ajaxLogin', methods: ['POST'])]
+    public function loginCheck(Request $request, UserRepository $userRepository, TokenStorageInterface $tokenStorage){ 
+
+        $username = $request->request->get('username');
+        $password = $request->request->get('password');
+
+        $user = $userRepository->findOneBy(['username' => $username]);
+
+        if (!$user) {
+            return new JsonResponse(['success' => false]);
         }
+
+        if (!password_verify($password, $user->getPassword())) {
+            return new JsonResponse(['success' => false]);
+        }
+
+        $token = new UsernamePasswordToken($user, 'main', $user->getRoles());
+        $tokenStorage->setToken($token);
+        $request->getSession()->set('_security_main', serialize($token));
+
+        return new JsonResponse(['success' => true]);
+    }
+
+
+    #[Route('/ajax/postList', name: 'ajaxPostList', methods: ['GET'])]
+    public function PostList(Request $request, EntityManagerInterface $em){ 
+
+        $posts = $em->getRepository(Post::class)->findAll();
+        $post_table = $this->renderView('post/postTable.html.twig', ['posts' => $posts]);
+
+        return new Response($post_table);
         
-        
+    }
+
+
+    #[Route('/ajax/postForm', name: 'ajaxPostForm', methods: ['GET', 'POST'])]
+    public function postForm(EntityManagerInterface $em){
+
+        $post = new Post();
+        $form = $this->createForm(PostFormType::class, $post);
+
+        $html = $this->renderView('post/postForm.html.twig', ['postForm' => $form->createView()]);
+
+        return new Response($html);
+    }
+
+
+    #[Route('/ajax/postAdd', name: 'ajaxpostAdd', methods: ['POST'])]
+    public function postAdd(Request $request, EntityManagerInterface $em){ 
+
         $post = new Post();
         $form = $this->createForm(PostFormType::class, $post);
 
         $form->handleRequest($request);
         
-        if ($request->isXmlHttpRequest() && $form->isSubmitted() && $form->isValid()){
-
-            $em->persist($post);
-            $em->flush();
-
-            $posts = $em->getRepository(Post::class)->findAll();
-
-            $post_table = $this->renderView('post/postTable.html.twig', ['posts' => $posts]);
-
-            return new JsonResponse(['success' => 'Successfully posted!', 'post_table' => $post_table]);
+        if (!$form->isSubmitted() || !$form->isValid()){
+            return new JsonResponse(['error' => 'Form is invalid']);
         }   
-        if ($request->isXmlHttpRequest() && $form->isSubmitted() && !$form->isValid()){
-            return new JsonResponse(['error' => 'Invalid Post!']);
-        }
 
-        return $this->render('post/index.html.twig', array('login' => 'true','postForm' => $form->createView(), 'posts' => $posts));
+
+        $em->persist($post);
+        $em->flush();
+
+        return new JsonResponse(['success' => 'Successfully posted!']);
+        
     }
 
-
-    #[Route('/login_check', name: 'app_login_check', methods: ['POST'])]
-    public function loginCheck(){ 
-    }
 
 
     #[Route('/view/{id}', name: 'viewAction')]
@@ -73,11 +120,13 @@ final class PostController extends AbstractController
 
         $post = $em->getRepository(Post::class)->findOneBy(['id' => $id]);
         if (!$post){
-            return new JsonResponse(['response' => 'No Post!']);
+            return new JsonResponse(['error' => 'No Post!']);
         }
         
         $post_detail = ['title' => $post->getTitle(), 'content' => $post->getContent(), 'created' => $post->getCreated()->format('Y-m-d H:i:s')];
-        return new JsonResponse(['response' => $post_detail]);
+
+        $postHtml = $this->renderView('post/postDetail.html.twig', ['postDetail' => $post_detail]);
+        return new Response($postHtml);
 
     }
 
@@ -87,12 +136,12 @@ final class PostController extends AbstractController
 
         $post = $em->getRepository(Post::class)->findOneBy(['id' => $id]);
         if (!$post){
-            return new JsonResponse(['response' => 'No Post!']);
+            return new JsonResponse(['error' => 'No Post!']);
         }
 
         $em->remove($post);
         $em->flush();
-        return new JsonResponse(['response' => 'deleted!']);
+        return new JsonResponse(['success' => 'Post Sucesfully deleted!']);
 
     }
 
