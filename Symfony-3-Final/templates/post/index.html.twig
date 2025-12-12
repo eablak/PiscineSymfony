@@ -15,16 +15,15 @@
     <br>
     <div id="ajax-results"></div>
 
-    <div id="postList-container">
-        {% if app.user %}
-            {% include 'post/postTable.html.twig' %}
-        {% endif %}
-    </div>
-
     <div id="loginForm-container">
         {% if not app.user %}
             {% include 'login/loginForm.html.twig'%}
         {% endif %}
+    </div>
+
+    <br>
+    <div id="postList-container">
+        {% include 'post/postTable.html.twig' %}
     </div>
 
     <div id="details-container"></div>

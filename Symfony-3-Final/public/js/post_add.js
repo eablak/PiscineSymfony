@@ -6,7 +6,7 @@ $(document).on('submit', '#post-form', function(e){
     
     $.post('/ajax/postAdd', $form.serialize(), function(response){
         if(response.error){
-            $('#ajax-results').html(response.error).show();
+            alert("Title already exsist!");
             return;
         }
 
