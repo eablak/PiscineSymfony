@@ -22,6 +22,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use WebSocket\Client;
 
 
 
@@ -109,6 +110,8 @@ final class PostController extends AbstractController
         $em->persist($post);
         $em->flush();
 
+        $this->notifyWebSocket('post added');
+
         return new JsonResponse(['success' => 'Successfully posted!']);
         
     }
@@ -141,8 +144,20 @@ final class PostController extends AbstractController
 
         $em->remove($post);
         $em->flush();
+
+        $this->notifyWebSocket('post deleted');
+
         return new JsonResponse(['success' => 'Post Sucesfully deleted!']);
 
     }
 
+
+    private function notifyWebSocket(string $message): void
+    {
+        try{
+            $client = new Client('ws://localhost:8080');
+            $client->send($message);
+            $client->close();
+        }catch(\Throwable $e){}
+    }
 }

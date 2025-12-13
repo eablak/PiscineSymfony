@@ -9,9 +9,6 @@ $(document).on('click', '.post-delete', function(e){
             return;
         }
         
-        $.get('/ajax/postList', function(listHtml){
-            $('#postList-container').html(listHtml);
-        })
         $('#ajax-results').html(response.success).show();
         
     });
